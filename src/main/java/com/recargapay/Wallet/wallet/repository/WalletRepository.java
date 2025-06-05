@@ -1,6 +1,6 @@
 package com.recargapay.Wallet.wallet.repository;
 
-import com.recargapay.Wallet.wallet.entity.WalletEntity;
+import com.recargapay.Wallet.wallet.model.WalletEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

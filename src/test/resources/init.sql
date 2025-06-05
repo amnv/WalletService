@@ -7,3 +7,16 @@ CREATE TABLE wallet (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP
 );
+
+DROP TABLE IF EXISTS balance;
+
+CREATE TABLE balance (
+    id VARCHAR(255) PRIMARY KEY,
+    wallet_id VARCHAR(255) NOT NULL UNIQUE,
+    balance_value DOUBLE PRECISION NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    deleted_at TIMESTAMP,
+
+    CONSTRAINT fk_wallet_balance FOREIGN KEY (wallet_id) REFERENCES wallet(id)
+);

@@ -1,7 +1,10 @@
-package com.recargapay.Wallet.wallet.entity;
+package com.recargapay.Wallet.wallet.model;
 
+import com.recargapay.Wallet.balance.model.BalanceEntity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
 
@@ -12,6 +15,8 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@SQLDelete(sql = "UPDATE wallet SET deleted_at = now() WHERE id=?")
+@SQLRestriction("deleted_at IS NULL")
 public class WalletEntity {
 
     @Id
@@ -23,6 +28,9 @@ public class WalletEntity {
 
     @Column(nullable = false, length = 14)
     private String cpf;
+
+    @OneToOne(mappedBy = "wallet", orphanRemoval = true)
+    private BalanceEntity balance;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

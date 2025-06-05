@@ -17,6 +17,6 @@ public class WalletRequest {
     private String username;
 
     @NotEmpty
-    @Pattern(regexp = "^(\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}|\\d{11})$", message = "Enter a valid CPF.")
+    @Pattern(regexp = "^\\d{3}\\.\\d{3}\\.\\d{3}\\-\\d{2}$", message = "Enter a valid CPF.")
     private String cpf;
 }
