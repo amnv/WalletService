@@ -7,8 +7,10 @@ import com.recargapay.Wallet.wallet.model.WalletEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,11 +28,25 @@ public class BalanceService {
                 .build());
     }
 
-    public BalanceEntity getBalance(String walledId) throws ChangeSetPersister.NotFoundException {
-        BalanceEntity balance = balanceRepository.findByWalletId(walledId)
+    @Transactional
+    public BalanceEntity getBalance(String walletId) throws ChangeSetPersister.NotFoundException {
+        BalanceEntity balance = balanceRepository.findByWalletId(walletId)
                 .orElseThrow(ChangeSetPersister.NotFoundException::new);
 
         statementService.addOperationBalance(balance);
         return balance;
+    }
+
+    @Transactional
+    public void deposit(String walletId, Double value) {
+        Optional<BalanceEntity> balanceOpt = balanceRepository.findByWalletId(walletId);
+        if (balanceOpt.isEmpty()) return;
+
+        BalanceEntity balance = balanceOpt.get();
+        balance.setValue(balance.getValue() + value);
+        balance.setUpdatedAt(LocalDateTime.now());
+        BalanceEntity balanceSaved = balanceRepository.save(balance);
+
+        statementService.addOperationDeposit(balanceSaved);
     }
 }

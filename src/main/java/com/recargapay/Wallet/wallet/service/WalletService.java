@@ -7,6 +7,7 @@ import com.recargapay.Wallet.wallet.model.WalletEntity;
 import com.recargapay.Wallet.wallet.repository.WalletRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +19,7 @@ public class WalletService {
     private final BalanceService balanceService;
     private final StatementService statementService;
 
+    @Transactional
     public WalletEntity create(WalletEntity wallet) {
         wallet.setCreatedAt(LocalDateTime.now());
         wallet.setUpdatedAt(LocalDateTime.now());

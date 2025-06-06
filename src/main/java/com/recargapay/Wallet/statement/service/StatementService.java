@@ -38,6 +38,10 @@ public class StatementService {
         this.addOperation(owner, null, owner.getValue(), Operation.BALANCE);
     }
 
+    public void addOperationDeposit(BalanceEntity owner) {
+        this.addOperation(owner, null, owner.getValue(), Operation.DEPOSIT);
+    }
+
     public Page<StatementEntity> detailBalance(String balanceId, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
         return statementRepository.findAllByBalanceIdAndCreatedAtBetween(balanceId, startDate, endDate, pageable);
     }
