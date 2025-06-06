@@ -1,4 +1,7 @@
+DROP TABLE IF EXISTS statement;
+DROP TABLE IF EXISTS balance;
 DROP TABLE IF EXISTS wallet;
+
 CREATE TABLE wallet (
     id VARCHAR(255) PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
@@ -7,8 +10,6 @@ CREATE TABLE wallet (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP
 );
-
-DROP TABLE IF EXISTS balance;
 
 CREATE TABLE balance (
     id VARCHAR(255) PRIMARY KEY,
@@ -19,4 +20,19 @@ CREATE TABLE balance (
     deleted_at TIMESTAMP,
 
     CONSTRAINT fk_wallet_balance FOREIGN KEY (wallet_id) REFERENCES wallet(id)
+);
+
+CREATE TABLE statement (
+    id VARCHAR(255) PRIMARY KEY,
+
+    owner_id VARCHAR(255) NOT NULL,
+    target_id VARCHAR(255),
+
+    operation_value DOUBLE PRECISION NOT NULL,
+    operation VARCHAR(50) NOT NULL,
+
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_statement_owner FOREIGN KEY (owner_id) REFERENCES balance (id),
+    CONSTRAINT fk_statement_target FOREIGN KEY (target_id) REFERENCES balance (id)
 );

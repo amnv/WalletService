@@ -1,5 +1,6 @@
 package com.recargapay.Wallet.balance.model;
 
+import com.recargapay.Wallet.statement.model.StatementEntity;
 import com.recargapay.Wallet.wallet.model.WalletEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -7,6 +8,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "balance")
@@ -29,6 +31,12 @@ public class BalanceEntity {
 
     @Column(name = "balance_value", nullable = false)
     private Double value;
+
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+    private List<StatementEntity> statementsAsOwner;
+
+    @OneToMany(mappedBy = "target", cascade = CascadeType.ALL)
+    private List<StatementEntity> statementsAsTarget;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
