@@ -25,5 +25,9 @@ public class FundController {
         fundService.deposit(fundRequest);
     }
 
+    @PostMapping(value = "/withdraws", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void withdraw(@Valid @RequestBody FundRequest fundRequest) {
 
+        fundService.withdraw(fundRequest);
+    }
 }

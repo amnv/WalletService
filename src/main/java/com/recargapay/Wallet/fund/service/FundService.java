@@ -19,4 +19,8 @@ public class FundService {
         kafkaTemplate.send(KafkaConstants.DEPOSIT_TOPIC, fundRequest);
     }
 
+    public void withdraw(FundRequest fundRequest) {
+        log.info("Send request for witdraw to Kafka");
+        kafkaTemplate.send(KafkaConstants.WITHDRAW_TOPIC, fundRequest);
+    }
 }

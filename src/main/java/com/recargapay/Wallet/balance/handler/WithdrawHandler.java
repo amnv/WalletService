@@ -11,15 +11,15 @@ import org.springframework.stereotype.Component;
 @Log4j2
 @Component
 @RequiredArgsConstructor
-public class DepositHandler {
+public class WithdrawHandler {
 
     private final BalanceService balanceService;
 
-    @KafkaListener(topics = KafkaConstants.DEPOSIT_TOPIC,
-            groupId = "wallet-group",
+    @KafkaListener(topics = KafkaConstants.WITHDRAW_TOPIC,
+            groupId = KafkaConstants.GROUP_ID,
             containerFactory = "fundKafkaListenerContainerFactory")
     public void listen(FundRequest fundRequest) {
-        log.info("Received message at topic: {}", KafkaConstants.DEPOSIT_TOPIC);
-        balanceService.deposit(fundRequest.getOwnerWalletId(), fundRequest.getValue());
+        log.info("Received message at topic: {}", KafkaConstants.WITHDRAW_TOPIC);
+        balanceService.withdraw(fundRequest.getOwnerWalletId(), fundRequest.getValue());
     }
 }

@@ -42,6 +42,14 @@ public class StatementService {
         this.addOperation(owner, null, owner.getValue(), Operation.DEPOSIT);
     }
 
+    public void addOperationWithdraw(BalanceEntity owner) {
+        this.addOperation(owner, null, owner.getValue(), Operation.WITHDRAW);
+    }
+
+    public void addOperationTransfer(BalanceEntity owner, BalanceEntity target) {
+        this.addOperation(owner, target, owner.getValue(), Operation.TRANSFER);
+    }
+
     public Page<StatementEntity> detailBalance(String balanceId, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {
         return statementRepository.findAllByBalanceIdAndCreatedAtBetween(balanceId, startDate, endDate, pageable);
     }
