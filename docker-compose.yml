@@ -53,17 +53,6 @@ services:
     networks:
       - pgnet
 
-  walletapp:
-    image:
-    container_name: walletapp
-    ports:
-      - "8080:8080"
-    depends_on:
-      - db
-      - kafka
-    networks:
-      - pgnet
-
 volumes:
   pgdata:
 
