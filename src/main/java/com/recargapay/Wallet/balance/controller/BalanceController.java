@@ -4,6 +4,7 @@ import com.recargapay.Wallet.balance.dto.BalanceResponse;
 import com.recargapay.Wallet.balance.mapper.BalanceMapper;
 import com.recargapay.Wallet.balance.service.BalanceService;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.validator.constraints.UUID;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,7 @@ public class BalanceController {
     private final BalanceMapper balanceMapper;
 
     @GetMapping("/{walletId}")
-    public BalanceResponse findByWalletId(@PathVariable String walletId) throws ChangeSetPersister.NotFoundException {
+    public BalanceResponse findByWalletId(@PathVariable @UUID String walletId) throws ChangeSetPersister.NotFoundException {
         return balanceMapper.toBalanceResponse(balanceService.getBalance(walletId));
     }
 }

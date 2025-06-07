@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.UUID;
 
 @Data
 @Builder
@@ -15,7 +16,10 @@ import lombok.NoArgsConstructor;
 public class FundRequest {
 
     @NotEmpty
+    @UUID
     private String ownerWalletId;
+
+    @UUID
     private String targetWalletId;
 
     @NotNull

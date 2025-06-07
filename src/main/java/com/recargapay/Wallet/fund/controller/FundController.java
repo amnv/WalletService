@@ -30,4 +30,10 @@ public class FundController {
 
         fundService.withdraw(fundRequest);
     }
+
+    @PostMapping(value = "/transfers", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public void transfer(@Valid @RequestBody FundRequest fundRequest) {
+
+        fundService.transfer(fundRequest);
+    }
 }

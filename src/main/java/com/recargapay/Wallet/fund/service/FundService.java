@@ -23,4 +23,9 @@ public class FundService {
         log.info("Send request for witdraw to Kafka");
         kafkaTemplate.send(KafkaConstants.WITHDRAW_TOPIC, fundRequest);
     }
+
+    public void transfer(FundRequest fundRequest) {
+        log.info("Send request for transfer to Kafka");
+        kafkaTemplate.send(KafkaConstants.TRANSFER_TOPIC, fundRequest);
+    }
 }

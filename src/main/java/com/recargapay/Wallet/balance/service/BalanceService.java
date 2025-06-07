@@ -52,28 +52,60 @@ public class BalanceService {
         balance.setUpdatedAt(LocalDateTime.now());
         BalanceEntity balanceSaved = balanceRepository.save(balance);
 
-        statementService.addOperationDeposit(balanceSaved);
+        statementService.addOperationDeposit(balanceSaved, value);
     }
 
     @Transactional
     public void withdraw(String walletId, Double value) {
+        BalanceEntity balance = getAndValidateBalanceEntity(walletId, value);
+        if (balance == null) return;
+
+        balance.setValue(balance.getValue() - value);
+        balance.setUpdatedAt(LocalDateTime.now());
+        BalanceEntity balanceSaved = balanceRepository.save(balance);
+
+        statementService.addOperationWithdraw(balanceSaved, value);
+    }
+
+    @Transactional
+    public void transfer(String ownerWalletId, String targetWalletID, Double value) {
+        BalanceEntity balanceOwner = getAndValidateBalanceEntity(ownerWalletId, value);
+        if (balanceOwner == null) return;
+
+        Optional<BalanceEntity> balanceTargetOpt = balanceRepository.findByWalletId(targetWalletID);
+        if (balanceTargetOpt.isEmpty()) {
+            log.error("The wallet id {} is not registered", targetWalletID);
+            return;
+        }
+
+        // Withdraw in owner
+        balanceOwner.setValue(balanceOwner.getValue() - value);
+        balanceOwner.setUpdatedAt(LocalDateTime.now());
+        BalanceEntity balanceOwnerSaved = balanceRepository.save(balanceOwner);
+
+        // deposit in target
+        BalanceEntity balanceTarget = balanceTargetOpt.get();
+        balanceTarget.setValue(balanceTarget.getValue() + value);
+        balanceTarget.setUpdatedAt(LocalDateTime.now());
+        BalanceEntity balanceTargetSaved = balanceRepository.save(balanceTarget);
+
+        statementService.addOperationTransfer(balanceOwnerSaved, balanceTargetSaved, value);
+    }
+
+    private BalanceEntity getAndValidateBalanceEntity(String walletId, Double value) {
         Optional<BalanceEntity> balanceOpt = balanceRepository.findByWalletId(walletId);
         if (balanceOpt.isEmpty()) {
-            log.error(String.format("The wallet id %s is not registered", walletId));
-            return;
+            log.error("The wallet id {} is not registered", walletId);
+            return null;
         }
 
         BalanceEntity balance = balanceOpt.get();
 
         if (balance.getValue() - value < 0) {
             log.error("Your balance is insufficient to complete this operation.");
-            return;
+            return null;
         }
 
-        balance.setValue(balance.getValue() - value);
-        balance.setUpdatedAt(LocalDateTime.now());
-        BalanceEntity balanceSaved = balanceRepository.save(balance);
-
-        statementService.addOperationDeposit(balanceSaved);
+        return balance;
     }
 }

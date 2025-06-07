@@ -38,16 +38,16 @@ public class StatementService {
         this.addOperation(owner, null, owner.getValue(), Operation.BALANCE);
     }
 
-    public void addOperationDeposit(BalanceEntity owner) {
-        this.addOperation(owner, null, owner.getValue(), Operation.DEPOSIT);
+    public void addOperationDeposit(BalanceEntity owner, Double value) {
+        this.addOperation(owner, null, value, Operation.DEPOSIT);
     }
 
-    public void addOperationWithdraw(BalanceEntity owner) {
-        this.addOperation(owner, null, owner.getValue(), Operation.WITHDRAW);
+    public void addOperationWithdraw(BalanceEntity owner, Double value) {
+        this.addOperation(owner, null, value, Operation.WITHDRAW);
     }
 
-    public void addOperationTransfer(BalanceEntity owner, BalanceEntity target) {
-        this.addOperation(owner, target, owner.getValue(), Operation.TRANSFER);
+    public void addOperationTransfer(BalanceEntity owner, BalanceEntity target, Double value) {
+        this.addOperation(owner, target, value, Operation.TRANSFER);
     }
 
     public Page<StatementEntity> detailBalance(String balanceId, LocalDateTime startDate, LocalDateTime endDate, Pageable pageable) {

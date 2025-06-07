@@ -17,4 +17,9 @@ public class KafkaTopicConfig {
     public NewTopic withdraw() {
         return new NewTopic(KafkaConstants.WITHDRAW_TOPIC, 1, (short) 1);
     }
+
+    @Bean
+    public NewTopic transfer() {
+        return new NewTopic(KafkaConstants.TRANSFER_TOPIC, 1, (short) 1);
+    }
 }
